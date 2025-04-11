@@ -1,0 +1,9 @@
+/* src/styles/footer.css */
+.footer-container {
+    background-color: #000000;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100vw; /* Tailwind's max-w-7xl equivalent */
+    border-top: 1px solid rgba(255, 165, 0, 0.2); /* Optional */
+  }
+  
