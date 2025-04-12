@@ -78,6 +78,94 @@ const Home = () => {
         </div>
       </section>
 
+      {/* Testimonials Section */}
+      <section className="bg-gradient-to-r from-black via-gray-900 to-black py-16 px-4">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-4xl text-white font-bold text-center mb-10">What Our Clients Say</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[
+              {
+                name: "Ananya Sharma",
+                feedback: "Absolutely loved the bridal makeover! I felt like a princess on my wedding day. Highly recommend Vijayaa Makeovers!",
+                image: "https://randomuser.me/api/portraits/women/68.jpg",
+              },
+              {
+                name: "Sneha Patel",
+                feedback: "Great attention to detail and very friendly staff. I got a facial and hair spa and it was an amazing experience!",
+                image: "https://randomuser.me/api/portraits/women/30.jpg",
+              },
+              {
+                name: "Ritu Mehta",
+                feedback: "The makeup was flawless, and the hairstyling was exactly what I wanted. I felt so confident during the photoshoot!",
+                image: "https://randomuser.me/api/portraits/women/55.jpg",
+              },
+            ].map((testimonial, index) => (
+              <div
+                key={index}
+                className="bg-white/10 text-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
+              >
+                <img
+                  src={testimonial.image}
+                  alt={testimonial.name}
+                  className="w-16 h-16 rounded-full mx-auto mb-4"
+                />
+                <h3 className="text-xl font-semibold mb-2">{testimonial.name}</h3>
+                <p className="text-sm text-white/80">{testimonial.feedback}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Video Gallery Section */}
+      <section className="py-16 px-4 bg-gray-900">
+        <div className="max-w-6xl mx-auto text-center">
+          <h2 className="text-4xl text-white font-bold mb-10">Our Transformation Videos</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <iframe
+              className="w-full h-64 sm:h-80 rounded-xl"
+              src="https://www.youtube.com/embed/5pMJhOQOwlw"
+              title="Video 1"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            ></iframe>
+            <iframe
+              className="w-full h-64 sm:h-80 rounded-xl"
+              src="https://www.youtube.com/embed/OT7csoxzE1w"
+              title="Video 2"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            ></iframe>
+            <iframe
+              className="w-full h-64 sm:h-80 rounded-xl"
+              src="https://www.youtube.com/embed/7F9VtD_Cd4w"
+              title="Video 3"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            ></iframe>
+          </div>
+        </div>
+      </section>
+
+      {/* Google Map Embed Section */}
+      <section className="py-16 px-4">
+        <div className="max-w-6xl mx-auto text-center">
+          <h2 className="text-4xl text-white font-bold mb-10">Visit Us</h2>
+          <div className="w-full h-80 rounded-lg overflow-hidden shadow-lg">
+            <iframe
+              className="w-full h-full"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d166259.01659882003!2d78.64749565874076!3d17.35005425579957!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bcb93e3d7f42d1f%3A0xe9dbef7553cc28a2!2sTelangana%20Co-Operative%20Bank!5e0!3m2!1sen!2sin!4v1681387131450!5m2!1sen!2sin"
+              allowFullScreen
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+            ></iframe>
+          </div>
+        </div>
+      </section>
+
       <Footer />
     </div>
   );
