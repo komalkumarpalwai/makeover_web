@@ -1,8 +1,7 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
-import path from 'path'
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+import path from 'path';
 
-// No need to use dotenv here for Render
 export default defineConfig({
   resolve: {
     alias: {
@@ -12,6 +11,10 @@ export default defineConfig({
   plugins: [react()],
   server: {
     host: '0.0.0.0',
-    // Use environment variable with a fallback
-  }
-})
+    allowedHosts: [
+      'makeover-web-2.onrender.com',
+      'localhost',  // You can add localhost here for local development as well.
+    ],
+   // port: process.env.PORT ? parseInt(process.env.PORT) : 5173,
+  },
+});
