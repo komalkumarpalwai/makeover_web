@@ -13,7 +13,7 @@ import 'swiper/css/pagination';
 
 const App = () => {
   return (
-    <Router basename="/komal_solution">
+    <Router basename="/">
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/services" element={<Services />} />
