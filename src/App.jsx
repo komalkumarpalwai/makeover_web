@@ -7,7 +7,7 @@ import AboutUs from './pages/AboutUs';
 import Contact from './pages/Contact';
 import Feedback from './pages/Feedback';
 import Privacy from './components/Privacy';
-import Terms from './components/terms';
+import Terms from './components/Terms';
 import 'swiper/css';
 import 'swiper/css/pagination';
 
