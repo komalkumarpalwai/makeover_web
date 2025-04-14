@@ -1,6 +1,9 @@
 import React from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import v1 from '../assets/v1.mp4';
+import v2 from '../assets/v2.mp4';
+import v3 from '../assets/v3.mp4';
 
 const Home = () => {
   return (
@@ -9,7 +12,6 @@ const Home = () => {
 
       {/* Hero Section */}
       <main className="relative h-[100vh] w-full">
-        {/* Background Image */}
         <div
           className="absolute inset-0 bg-cover bg-center z-0"
           style={{
@@ -19,7 +21,6 @@ const Home = () => {
           <div className="absolute inset-0 bg-gradient-to-br from-black/80 via-black/60 to-black/80" />
         </div>
 
-        {/* Left-Side Content */}
         <div className="relative z-10 flex items-center h-full px-4 sm:px-10 md:px-20 max-w-screen-xl mx-auto">
           <div className="text-left text-white max-w-2xl">
             <h1 className="text-5xl md:text-6xl font-extrabold font-poppins text-gold mb-4 leading-tight drop-shadow-lg">
@@ -57,7 +58,7 @@ const Home = () => {
                   Experience the magic of transformation with our premium bridal makeover. A perfect blend of elegance, grace, and flawless beauty for your special day.
                 </p>
                 <a
-                  href="/booking"
+                  href="/service"
                   className="inline-block mt-2 px-6 py-2 rounded-full bg-orange-500 hover:bg-orange-600 text-white font-semibold transition-all duration-300 shadow-md"
                 >
                   Book This Service
@@ -66,7 +67,6 @@ const Home = () => {
             </div>
           </div>
 
-          {/* More Services Button */}
           <div className="text-center">
             <a
               href="/services"
@@ -83,21 +83,23 @@ const Home = () => {
         <div className="max-w-6xl mx-auto">
           <h2 className="text-4xl text-white font-bold text-center mb-10">What Our Clients Say</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[{
-              name: "Ananya Sharma",
-              feedback: "Absolutely loved the bridal makeover! I felt like a princess on my wedding day. Highly recommend Vijayaa Makeovers!",
-              image: "https://randomuser.me/api/portraits/women/68.jpg",
-            },
-            {
-              name: "Sneha Patel",
-              feedback: "Great attention to detail and very friendly staff. I got a facial and hair spa and it was an amazing experience!",
-              image: "https://randomuser.me/api/portraits/women/30.jpg",
-            },
-            {
-              name: "Ritu Mehta",
-              feedback: "The makeup was flawless, and the hairstyling was exactly what I wanted. I felt so confident during the photoshoot!",
-              image: "https://randomuser.me/api/portraits/women/55.jpg",
-            }].map((testimonial, index) => (
+            {[
+              {
+                name: 'Ananya Sharma',
+                feedback: 'Absolutely loved the bridal makeover! I felt like a princess on my wedding day. Highly recommend Vijayaa Makeovers!',
+                image: 'https://randomuser.me/api/portraits/women/68.jpg',
+              },
+              {
+                name: 'Sneha Patel',
+                feedback: 'Great attention to detail and very friendly staff. I got a facial and hair spa and it was an amazing experience!',
+                image: 'https://randomuser.me/api/portraits/women/30.jpg',
+              },
+              {
+                name: 'Ritu Mehta',
+                feedback: 'The makeup was flawless, and the hairstyling was exactly what I wanted. I felt so confident during the photoshoot!',
+                image: 'https://randomuser.me/api/portraits/women/55.jpg',
+              },
+            ].map((testimonial, index) => (
               <div
                 key={index}
                 className="bg-white/10 text-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
@@ -120,30 +122,18 @@ const Home = () => {
         <div className="max-w-6xl mx-auto text-center">
           <h2 className="text-4xl text-white font-bold mb-10">Our Transformation Videos</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <iframe
-              className="w-full h-64 sm:h-80 rounded-xl"
-              src="https://www.youtube.com/embed/5pMJhOQOwlw"
-              title="Video 1"
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            ></iframe>
-            <iframe
-              className="w-full h-64 sm:h-80 rounded-xl"
-              src="https://www.youtube.com/embed/OT7csoxzE1w"
-              title="Video 2"
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            ></iframe>
-            <iframe
-              className="w-full h-64 sm:h-80 rounded-xl"
-              src="https://www.youtube.com/embed/7F9VtD_Cd4w"
-              title="Video 3"
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            ></iframe>
+            {[v1, v2, v3].map((videoSrc, index) => (
+              <video
+                key={index}
+                className="w-full h-64 sm:h-80 rounded-xl object-cover shadow-lg hover:shadow-xl transition duration-300"
+                src={videoSrc}
+                muted
+                loop
+                playsInline
+                onMouseEnter={(e) => e.target.play()}
+                onMouseLeave={(e) => e.target.pause()}
+              />
+            ))}
           </div>
         </div>
       </section>
@@ -152,21 +142,17 @@ const Home = () => {
       <section className="py-16 px-4">
         <div className="max-w-6xl mx-auto text-center">
           <h2 className="text-4xl text-white font-bold mb-10">Visit Us</h2>
-          
-          {/* Google Map iframe */}
           <div className="w-full h-80 rounded-lg overflow-hidden shadow-lg mb-4">
             <iframe
               className="w-full h-full"
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d166259.01659882003!2d78.64749565874076!3d17.35005425579957!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bcb93e3d7f42d1f%3A0xe9dbef7553cc28a2!2sTelangana%20Co-Operative%20Bank!5e0!3m2!1sen!2sin!4v1681387131450!5m2!1sen!2sin"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3806.274254597785!2d78.6039500751042!3d17.444567701381387!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bcb991ae6a1c3f9%3A0x1f7e3d93f75cc0a1!2sTurkayamjal%2C%20Telangana%20501110!5e0!3m2!1sen!2sin!4v1713081030000!5m2!1sen!2sin"
               allowFullScreen
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
             ></iframe>
           </div>
-          
-          {/* Get Directions Button */}
           <a
-            href="https://www.google.com/maps/dir/?api=1&destination=2nd+Floor,+Telangana+Co-Operative+Bank,+Bhramhanpally+'X'+Road,+Near+K.B+School,+Turkayamjal,+Hyderabad,+Telangana"
+            href="https://www.google.com/maps/dir//2nd+Floor,+Telangana+Co-Operative+Bank,+Bhramhanpally+X+Road,+Near+KB+School,+Turkayamjal,+Hyderabad,+Telangana"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-block mt-4 px-8 py-3 rounded-full text-lg font-semibold text-white bg-orange-500 hover:bg-orange-600 transition-all duration-300 shadow-lg"
