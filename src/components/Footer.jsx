@@ -23,10 +23,10 @@ const Footer = () => {
             </div>
             <p className="text-gray-400">Transforming beauty with precision and care</p>
             <div className="flex space-x-4">
-              <a href="#" className="text-white hover:text-orange-500 transition-colors">
+              <a href="https://www.instagram.com/vijayaa_makeovers" className="text-white hover:text-orange-500 transition-colors">
                 <FiInstagram size={24} />
               </a>
-              <a href="#" className="text-white hover:text-orange-500 transition-colors">
+              <a href="https://www.instagram.com/vijayaa_makeovers" className="text-white hover:text-orange-500 transition-colors">
                 <FiFacebook size={24} />
               </a>
             </div>
@@ -36,7 +36,7 @@ const Footer = () => {
           <div className="space-y-4">
             <h3 className="text-xl font-bold text-orange-500 mb-4">Quick Links</h3>
             <div className="flex flex-col space-y-3">
-              {['Home', 'Our Services', 'Pricing', 'About Us', 'Contact Us'].map((item) => (
+              {['services', 'About Us', 'Contact'].map((item) => (
                 <Link
                   key={item}
                   to={`/${item.toLowerCase().replace(' ', '')}`}
