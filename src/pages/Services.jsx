@@ -1,44 +1,71 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import categorizedServices from '../data/Dservices'; // assuming this file exists
+import categorizedServices from '../data/Dservices';
 
 const ServicesPage = () => {
   const [openCategory, setOpenCategory] = useState(null);
-  const [selectedService, setSelectedService] = useState(null);
+  const [selectedServices, setSelectedServices] = useState([]);
+  const [bookingSuccess, setBookingSuccess] = useState(false);
   const [bookingId, setBookingId] = useState(null);
-
+  const [formData, setFormData] = useState({
+    name: '',
+    mobile: '',
+    date: '',
+    time: '',
+    gender: '',
+  });
+  const [errors, setErrors] = useState({});
   const bookingFormRef = useRef(null);
 
-  // Load booking ID from localStorage on mount
-  useEffect(() => {
-    const storedId = localStorage.getItem('bookingId');
-    if (storedId) {
-      setBookingId(storedId);
-    }
-  }, []);
-
   const toggleCategory = (category) => {
-    setOpenCategory((prev) => (prev === category ? null : category));
-    setSelectedService(null);
+    setOpenCategory(prev => (prev === category ? null : category));
   };
 
   const handleServiceSelect = (service) => {
-    setSelectedService(service);
-    if (bookingFormRef.current) {
-      bookingFormRef.current.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start',
-      });
+    if (selectedServices.some((s) => s.title === service.title)) {
+      setSelectedServices(selectedServices.filter((s) => s.title !== service.title));
+    } else {
+      setSelectedServices([...selectedServices, service]);
     }
+  };
+
+  const generateBookingId = () => {
+    return Math.floor(Math.random() * 1000000);
   };
 
   const handleBookingSubmit = (e) => {
     e.preventDefault();
-    const id = 'BOOK' + Math.floor(Math.random() * 1000000).toString().padStart(6, '0');
-    setBookingId(id);
-    localStorage.setItem('bookingId', id);
+
+    if (validateForm()) {
+      const newBookingId = generateBookingId();
+      setBookingId(newBookingId);
+      setBookingSuccess(true);
+
+      setSelectedServices([]);
+      setFormData({
+        name: '',
+        mobile: '',
+        date: '',
+        time: '',
+        gender: '',
+      });
+    }
   };
+
+  const validateForm = () => {
+    const newErrors = {};
+    if (!formData.name) newErrors.name = 'Full Name is required.';
+    if (!formData.mobile || !/^\d{10}$/.test(formData.mobile)) newErrors.mobile = 'Valid Mobile Number is required.';
+    if (!formData.date) newErrors.date = 'Date is required.';
+    if (!formData.time) newErrors.time = 'Time is required.';
+    if (!formData.gender) newErrors.gender = 'Gender is required.';
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const totalAmount = selectedServices.reduce((total, service) => total + parseFloat(service.price.replace('₹', '').replace(',', '')), 0).toFixed(2);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -57,24 +84,17 @@ const ServicesPage = () => {
 
             {openCategory === category && (
               <div>
-                {selectedService === null && (
-                  <div className="mt-4 text-center text-gray-600">
-                    <p className="font-semibold text-lg">
-                      Please click on a service below to proceed with booking.
-                    </p>
-                  </div>
-                )}
-
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-4">
                   {services.map((service, index) => (
                     <div
                       key={index}
-                      className="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition cursor-pointer"
+                      className={`bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition cursor-pointer ${selectedServices.some((s) => s.title === service.title) ? 'bg-pink-100' : ''}`}
                       onClick={() => handleServiceSelect(service)}
                     >
                       <img
                         src={service.image}
                         alt={service.title}
+                        loading="lazy"
                         className="w-full h-40 object-cover rounded-md mb-3"
                       />
                       <h3 className="text-lg font-bold text-pink-600">{service.title}</h3>
@@ -88,76 +108,81 @@ const ServicesPage = () => {
           </div>
         ))}
 
-        {/* Booking Form */}
-        {selectedService && (
+        {selectedServices.length > 0 && (
           <div ref={bookingFormRef} className="mt-12 bg-white p-6 rounded-lg shadow-lg">
             <h2 className="text-2xl font-bold mb-4 text-center text-pink-600">Book Your Service</h2>
             <div className="mb-4">
-              <p className="font-semibold text-gray-700">Service: {selectedService.title}</p>
-              <p className="text-gray-600">{selectedService.description}</p>
-              <p className="text-pink-500 font-semibold">{selectedService.price}</p>
+              <p className="font-semibold text-gray-700">Selected Services:</p>
+              <ul className="list-disc pl-5">
+                {selectedServices.map((service, index) => (
+                  <li key={index} className="text-gray-600">{service.title}</li>
+                ))}
+              </ul>
+            </div>
+            <div className="mb-4">
+              <p className="font-semibold text-gray-700">Total Amount: ₹{totalAmount}</p>
             </div>
             <form onSubmit={handleBookingSubmit}>
               <div className="mb-4">
-                <label className="block text-gray-600 font-semibold" htmlFor="name">
-                  Full Name
-                </label>
+                <label className="block text-gray-600 font-semibold" htmlFor="name">Full Name</label>
                 <input
                   id="name"
                   type="text"
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   placeholder="Enter your name"
-                  className="w-full px-4 py-2 border rounded-md shadow-sm"
-                  required
+                  className={`w-full px-4 py-2 border rounded-md shadow-sm ${errors.name ? 'border-red-500' : ''}`}
                 />
+                {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>}
               </div>
               <div className="mb-4">
-                <label className="block text-gray-600 font-semibold" htmlFor="mobile">
-                  Mobile Number
-                </label>
+                <label className="block text-gray-600 font-semibold" htmlFor="mobile">Mobile Number</label>
                 <input
                   id="mobile"
                   type="text"
+                  value={formData.mobile}
+                  onChange={(e) => setFormData({ ...formData, mobile: e.target.value })}
                   placeholder="Enter your mobile number"
-                  className="w-full px-4 py-2 border rounded-md shadow-sm"
-                  required
+                  className={`w-full px-4 py-2 border rounded-md shadow-sm ${errors.mobile ? 'border-red-500' : ''}`}
                 />
+                {errors.mobile && <p className="text-red-500 text-sm">{errors.mobile}</p>}
               </div>
               <div className="mb-4">
-                <label className="block text-gray-600 font-semibold" htmlFor="date">
-                  Date
-                </label>
+                <label className="block text-gray-600 font-semibold" htmlFor="date">Date</label>
                 <input
                   id="date"
                   type="date"
-                  className="w-full px-4 py-2 border rounded-md shadow-sm"
-                  required
+                  value={formData.date}
+                  onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+                  className={`w-full px-4 py-2 border rounded-md shadow-sm ${errors.date ? 'border-red-500' : ''}`}
                 />
+                {errors.date && <p className="text-red-500 text-sm">{errors.date}</p>}
               </div>
               <div className="mb-4">
-                <label className="block text-gray-600 font-semibold" htmlFor="time">
-                  Time
-                </label>
+                <label className="block text-gray-600 font-semibold" htmlFor="time">Time</label>
                 <input
                   id="time"
                   type="time"
-                  className="w-full px-4 py-2 border rounded-md shadow-sm"
-                  required
+                  value={formData.time}
+                  onChange={(e) => setFormData({ ...formData, time: e.target.value })}
+                  className={`w-full px-4 py-2 border rounded-md shadow-sm ${errors.time ? 'border-red-500' : ''}`}
                 />
+                {errors.time && <p className="text-red-500 text-sm">{errors.time}</p>}
               </div>
               <div className="mb-4">
-                <label className="block text-gray-600 font-semibold" htmlFor="gender">
-                  Gender
-                </label>
+                <label className="block text-gray-600 font-semibold" htmlFor="gender">Gender</label>
                 <select
                   id="gender"
-                  className="w-full px-4 py-2 border rounded-md shadow-sm"
-                  required
+                  value={formData.gender}
+                  onChange={(e) => setFormData({ ...formData, gender: e.target.value })}
+                  className={`w-full px-4 py-2 border rounded-md shadow-sm ${errors.gender ? 'border-red-500' : ''}`}
                 >
                   <option value="">Select Gender</option>
                   <option value="male">Male</option>
                   <option value="female">Female</option>
                   <option value="other">Other</option>
                 </select>
+                {errors.gender && <p className="text-red-500 text-sm">{errors.gender}</p>}
               </div>
               <div className="text-center">
                 <button
@@ -168,15 +193,13 @@ const ServicesPage = () => {
                 </button>
               </div>
             </form>
+          </div>
+        )}
 
-            {bookingId && (
-              <div className="mt-6 text-center">
-                <p className="text-lg font-semibold text-green-600">
-                  Booking successful! Your Booking ID is:
-                </p>
-                <p className="text-xl font-bold text-green-800">{bookingId}</p>
-              </div>
-            )}
+        {bookingSuccess && bookingId && (
+          <div className="mt-8 text-center text-green-600">
+            <h2 className="text-xl font-semibold">Booking Successful!</h2>
+            <p>Your booking ID is: <span className="font-bold">{bookingId}</span></p>
           </div>
         )}
       </main>
